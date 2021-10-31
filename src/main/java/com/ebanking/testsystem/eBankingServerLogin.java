@@ -2,6 +2,8 @@ package com.ebanking.testsystem;
 
 import java.io.IOException;
 
+import javax.xml.validation.Validator;
+
 import com.ebanking.testsystem.LoginGrpc.LoginImplBase;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -34,26 +36,25 @@ public class eBankingServerLogin  extends LoginImplBase {
 		
 	@Override
 	public void sayLogin(LoginRequest request, StreamObserver<LoginValidation> responseObserver) {
-		System.out.println("You are Logging on to eBanking");
+		System.out.println("You are Logging on to eBanking");			
 			
-		LoginValidation reply = LoginValidation.newBuilder()
-				.setValid("Welcome " +request.getUsername()).build();
-			/*
-			public void check{
-				if(username == "Customer2" && password == "ThisIsMyPassword") {
-					System.out.println();
-				}
-				else {
-					System.out.println("Please try again, your credentials are incorrect");	
-			}
-			*/
-			responseObserver.onNext(reply);
+			responseObserver.onNext(checkLoginCredentials(request.getUsername(), request.getPassword()));
+						
 			responseObserver.onCompleted();
 
+	}
+	
+	private LoginValidation checkLoginCredentials(String username, String password) {
 		
-		
-
-
+		LoginValidation.Builder responseBuilder = LoginValidation.newBuilder();
+		if(username.equals("Customer2") && password.equals("ThisIsThePassword")) {      
+			responseBuilder.setValid("Login Success. Welcome " +username);
+		}
+		else {
+			responseBuilder.setValid("Login Failed, please check your Credentials and try again");
+			
+		}
+		return responseBuilder.build();
 	}
 
 }
