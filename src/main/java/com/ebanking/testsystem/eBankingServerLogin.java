@@ -15,11 +15,10 @@ public class eBankingServerLogin  extends LoginImplBase {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		int port = 50051;
-		
 		eBankingServerLogin loginServer = new eBankingServerLogin();
-		JmDNSRegistration reg = new JmDNSRegistration();
-		reg.run("_grpc._tcp.local.", "LoginService", 50051, "running Login service");
+		int port = 50051;
+		JmDNSRegistration reg1 = new JmDNSRegistration();
+		reg1.run("_grpc1._tcp.local.", "LoginService", port, "running Login service");
 		
 		try {
 			Server server1 = ServerBuilder.forPort(port)

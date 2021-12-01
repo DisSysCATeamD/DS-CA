@@ -13,8 +13,8 @@ public class eBankingServerPayment extends PaymentServiceImplBase{
 		int port = 50053;
 		
 		eBankingServerPayment paymentServer = new eBankingServerPayment();
-		JmDNSRegistration reg2 = new JmDNSRegistration();
-		reg2.run("_grpc2._tcp.local.", "PaymentService", 50053, "running Payment service");
+		JmDNSRegistration reg3 = new JmDNSRegistration();
+		reg3.run("_grpc3._tcp.local.", "PaymentService", port, "running Payment service");
 		
 		try {
 			Server server3 = ServerBuilder.forPort(port)

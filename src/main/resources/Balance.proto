@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.ebanking.testsystem";
+option java_outer_classname = "BalanceImpl";
+
+package testsystem;
+service Balance{
+
+	//unary rpc
+
+rpc  GetFirstString(balanceRequest) returns (balanceRequest){} // calling a method on a remote server
+
+rpc  GetSecondString(balanceRequest) returns (stream balanceRequest){}
+
+rpc  GetBalanceResponse(balanceRequest) returns (balanceResponse){} // calling a method on a remote server
+
+//server streaming for Balance
+rpc  GetBalanceResponseAmt(balanceRequest) returns (balanceResponse){} // calling a method on a remote server
+
+// server side streaming for last 3 transactions
+rpc  GetBalanceTransactions(balanceRequest) returns (stream balanceTransactions){}
+
+
+}
+
+
+message balanceRequest {
+	string firstString = 1;
+}
+
+//For our Balance
+message balanceResponse{
+	double balRes = 1;
+
+}
+
+//For our 3 Last Transactions
+message balanceTransactions{
+	string transaction =2;
+	double lastTrans =3;
+
+}
