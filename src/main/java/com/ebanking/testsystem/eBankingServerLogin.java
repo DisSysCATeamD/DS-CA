@@ -10,30 +10,35 @@ import io.grpc.ServerBuilder;
 import io.grpc.stub.StreamObserver;
 
 
-public class eBankingServerLogin  extends LoginImplBase {
+public class eBankingServerLogin {
+	
+	private Server server;
 	
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		
-		eBankingServerLogin loginServer = new eBankingServerLogin();
-		int port = 50051;
-		JmDNSRegistration reg1 = new JmDNSRegistration();
-		reg1.run("_grpc1._tcp.local.", "LoginService", port, "running Login service");
 		
-		try {
-			Server server1 = ServerBuilder.forPort(port)
-					.addService(loginServer)
-					.build()
-					.start();
-			
-			server1.awaitTermination();
-			
-		} catch(Exception e) {
-			System.out.println(e);
-		}
+		final eBankingServerLogin loginServer = new eBankingServerLogin();
+		loginServer.start();
+		
+		//JmDNSRegistration reg = new JmDNSRegistration();
+		//reg.run("_grpc1._tcp.local.", "LoginService", port, "running Login service");
 	}
 		
-	@Override
+	private void start() throws IOException, InterruptedException{
+		System.out.println("Starting Grpc Server");
+			
+		int port = 50051;
+		server = ServerBuilder.forPort(port).addService(new LogonServerImpl()).build().start();
+		System.out.println("Server runnning on port: "+port);
+			
+			server.awaitTermination();
+		
+	}
+		
+	static class LogonServerImpl extends LoginImplBase{
+		
+	
 	public void sayLogin(LoginRequest request, StreamObserver<LoginValidation> responseObserver) {
 		System.out.println("You are Logging on to eBanking");			
 			
@@ -54,6 +59,7 @@ public class eBankingServerLogin  extends LoginImplBase {
 			
 		}
 		return responseBuilder.build();
+	}
 	}
 
 }

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.ebanking.testsystem";
+option java_outer_classname = "TradingSystemImpl";
+
+package testsystem;
+
+service Trading{
+
+	rpc bidirectStartTrading(stream purchase) returns (stream stockListings){}
+
+}
+
+message purchase{
+	string request = 1;
+	string company = 2;
+	string isin = 3;
+	double price = 4;
+	int32 amount = 5;
+}
+
+message stockListings{
+	string company = 1;
+	string isin = 2;
+	double price = 3;
+	double trend = 4;
+}

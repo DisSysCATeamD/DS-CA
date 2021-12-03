@@ -15,8 +15,8 @@ public class eBankingServerBalance {
 
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		
 		final eBankingServerBalance ourServer = new eBankingServerBalance();
+		
 		ourServer.start();
 	}
 	
@@ -24,6 +24,8 @@ public class eBankingServerBalance {
 		System.out.println("Starting gRPC Server");
 		
 		int port = 50052;
+		JmDNSRegistration reg = new JmDNSRegistration();
+		reg.run("_grpc2._tcp.local.", "BalanceService", port, "running Balance service");
 		
 		server =ServerBuilder.forPort(port).addService(new NewServerImpl()).build().start();
 		System.out.println("SERVER RUNNING ON PORT:" +port);
