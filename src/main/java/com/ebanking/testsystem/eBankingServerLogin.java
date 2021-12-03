@@ -2,8 +2,6 @@ package com.ebanking.testsystem;
 
 import java.io.IOException;
 
-import javax.xml.validation.Validator;
-
 import com.ebanking.testsystem.LoginGrpc.LoginImplBase;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;

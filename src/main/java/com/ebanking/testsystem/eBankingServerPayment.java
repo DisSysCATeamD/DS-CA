@@ -13,8 +13,8 @@ public class eBankingServerPayment extends PaymentServiceImplBase{
 		int port = 50053;
 		
 		eBankingServerPayment paymentServer = new eBankingServerPayment();
-		JmDNSRegistration reg = new JmDNSRegistration();
-		reg.run("_grpc3._tcp.local.", "PaymentService", port, "running Payment service");
+		//JmDNSRegistration reg = new JmDNSRegistration();
+		//reg.run("_grpc3._tcp.local.", "PaymentService", port, "running Payment service");
 		
 		try {
 			Server server3 = ServerBuilder.forPort(port)
@@ -46,13 +46,13 @@ public class eBankingServerPayment extends PaymentServiceImplBase{
 			@Override
 			public void onNext(BillPayment value) {
 				if(balance >= value.getAmount()) {
-					if(value.getBic().matches("BOFIIE2D") || value.getBic().matches("AIBKIE2D") || value.getBic().matches("IPBSIE2D")){
+					//if(value.getBic().startsWith("BOFIIE") || value.getBic().startsWith("AIBKIE") || value.getBic().startsWith("IPBSIE")){
 						balance = balance - value.getAmount();
-						message = "Transaction Successful, your new balance is €"+balance;
-					}
-					else {
-						message = "The information provided is not correct. Please check and Try Again";
-					}
+						message = "Transaction Successful, your new balance is €"+balance;	
+					//}
+					//else {
+						//message = "The information provided is not correct. Please check and Try Again";
+					//}
 				}
 				else {
 					message = "Transaction Failed, please add more funds to complete this transaction";
