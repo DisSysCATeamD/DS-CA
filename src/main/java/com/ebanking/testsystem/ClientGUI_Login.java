@@ -143,6 +143,7 @@ public class ClientGUI_Login {
 		btnNewButton = new JButton("Login");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			try{
 				
 				String username = textField.getText();
 				String password = textField_1.getText();
@@ -153,6 +154,14 @@ public class ClientGUI_Login {
 				JOptionPane.showMessageDialog(null, "Validating, please wait");
 				
 				JOptionPane.showMessageDialog(null, "Response" +reply.getValid());	
+				Thread.sleep(8000);
+				
+			} catch(StatusRuntimeException el) {
+					ep.printStackTrace();
+			} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 				
 				//initializeMenu();
 			}
@@ -274,7 +283,7 @@ public class ClientGUI_Login {
 				@Override
 				public void onNext(Status value) {
 				// TODO Auto-generated method stub
-					System.out.println("Response from server: \n" + value.getConfirmation());
+					JOptionPane.showMessageDialog(null,"Response from server: \n" + value.getConfirmation());
 				}
 
 				@Override
@@ -314,13 +323,13 @@ public class ClientGUI_Login {
 				}
 				catch(StatusRuntimeException ep) {
 					ep.printStackTrace();
-				} catch (InterruptedException e1) {
+				} catch (InterruptedException e3) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					e3.printStackTrace();
 				}
-				finally {
+				//finally {
 					//channel3.shutdown().awaitTermination(60, TimeUnit.SECONDS);	
-			}
+			//}
 			}
 		});
 		btnNewButton_pay.setFont(new Font("Tahoma", Font.BOLD, 12));

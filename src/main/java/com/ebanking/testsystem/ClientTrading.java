@@ -10,8 +10,6 @@ import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
 public class ClientTrading {
-	
-	private static TradingStub asyncStub;
 
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
@@ -28,10 +26,8 @@ public class ClientTrading {
 			.usePlaintext()
 			.build();
 		
-		asyncStub = TradingGrpc.newStub(channel4);
-	}
-		
-	public static void bidirectStartTrading() {
+		TradingStub asyncStub = TradingGrpc.newStub(channel4);
+
 			
 			//for incoming messages we need to implement a StreamObserver
 			//then we pass it to the grpc library
