@@ -1,5 +1,7 @@
 package com.ebanking.testsystem;
 
+import javax.swing.JOptionPane;
+
 import com.ebanking.testsystem.TradingGrpc.TradingImplBase;
 
 import io.grpc.Server;
@@ -40,7 +42,7 @@ public StreamObserver<purchase> bidirectStartTrading(StreamObserver<stockListing
 					System.out.println("I would like to purchase " +buy.getCompany()+", " +buy.getIsin()+", " +buy.getPrice()+", " +buy.getAmount());
 					double cost = buy.getPrice()*buy.getAmount();
 					balance = balance - cost;
-					System.out.println("Total Cost is: "+cost+ "\nYour Balance is: "+balance);
+					JOptionPane.showMessageDialog(null,"Total Cost is: "+cost+ "\nYour Balance is: "+balance);
 				}
 				else {
 					System.out.println("Thank you");
