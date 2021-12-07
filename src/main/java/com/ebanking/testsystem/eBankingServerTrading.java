@@ -13,11 +13,11 @@ public class eBankingServerTrading extends TradingImplBase{
 	public static void main(String[] args){
 		
 		System.out.println("Starting Trading Grpc Server");
-		int port = 50054;
+		int port = 50004;
 
 		eBankingServerTrading tradingServer = new eBankingServerTrading();	
 		//JmDNSRegistration reg = new JmDNSRegistration();
-		//reg.run("_grpc4._tcp.local.", "TradingService", port, "running Trading service");
+		//reg.run("_trade._tcp.local.", "TradingService", port, "running Trading service");
 		try {
 			Server server4 = ServerBuilder.forPort(port)
 					.addService(tradingServer)
@@ -33,16 +33,17 @@ public class eBankingServerTrading extends TradingImplBase{
 public StreamObserver<purchase> bidirectStartTrading(StreamObserver<stockListings> responseObserver) {
 		
 		return new StreamObserver<purchase> () {
-
+			double balance =  1195.86;
+			String message = "";
 			@Override
 			public void onNext(purchase buy) {
 				System.out.println("Requesting information from Server: ");
-				double balance =  1196.25;
+				
 				if(buy.getRequest().equals("Trade") && balance >= 1000) {
 					System.out.println("I would like to purchase " +buy.getCompany()+", " +buy.getIsin()+", " +buy.getPrice()+", " +buy.getAmount());
 					double cost = buy.getPrice()*buy.getAmount();
 					balance = balance - cost;
-					JOptionPane.showMessageDialog(null,"Total Cost is: "+cost+ "\nYour Balance is: "+balance);
+					message = "Total Cost is: "+cost+ "\nYour Balance is: "+balance;
 				}
 				else {
 					System.out.println("Thank you");

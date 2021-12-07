@@ -13,7 +13,7 @@ public class JmDNSRegistration {
 	            JmDNS jmdns = JmDNS.create(InetAddress.getLocalHost());
 	            ServiceInfo serviceInfo = ServiceInfo.create(serviceType, serviceName, port, description);
 	            jmdns.registerService(serviceInfo);
-	            System.out.println("jmdns started");
+	            System.out.println("jmDNS Server Started");
 	        } catch (IOException e) {
 	            // TODO Auto-generated catch block
 	            e.printStackTrace();

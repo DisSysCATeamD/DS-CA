@@ -23,9 +23,9 @@ public class eBankingServerBalance {
 	private void start() throws IOException, InterruptedException {
 		System.out.println("Starting gRPC Server");
 		
-		int port = 50052;
+		int port = 50002;
 		JmDNSRegistration reg = new JmDNSRegistration();
-		reg.run("_grpc2._tcp.local.", "BalanceService", port, "running Balance service");
+		reg.run("_bal._tcp.local.", "BalanceService", port, "running Balance service");
 		
 		server =ServerBuilder.forPort(port).addService(new NewServerImpl()).build().start();
 		System.out.println("SERVER RUNNING ON PORT:" +port);
@@ -110,7 +110,7 @@ public class eBankingServerBalance {
 			
 			balanceResponse.Builder response =  balanceResponse.newBuilder();
 			
-			double firstInt =500.56;
+			double firstInt =1195.86;
 			
 			response.setBalRes(firstInt);
 			responseObserver.onNext(response.build());  // as we are unary only we only want to get 1 message back so only need only one "onNext". Will be changeing the default "request" as we are wanting a response. 

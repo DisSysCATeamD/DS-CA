@@ -2,6 +2,8 @@ package com.ebanking.testsystem;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.jmdns.ServiceInfo;
+
 import com.ebanking.testsystem.PaymentServiceGrpc.PaymentServiceStub;
 
 import io.grpc.ManagedChannel;
@@ -15,16 +17,17 @@ public class ClientPayment {
 		// TODO Auto-generated method stub
 		
 		String host = "localhost";
-		int port = 50053;
+		//int port = 50003;
 		
-		//ServiceInfo serviceInfo = JmDNSDiscovery.run("_grpc3._tcp.local.");
+		ServiceInfo serviceInfo3 = JmDNSDiscovery.run("_pay._tcp.local.");
 	
-		//System.out.println("service running on port: " + serviceInfo.getPort());
+		System.out.println("service running on port: " + serviceInfo3.getPort());
 		
 		ManagedChannel channel3 = ManagedChannelBuilder
-				.forAddress(host, port)
+				.forAddress(host, serviceInfo3.getPort())
 				.usePlaintext()
 				.build();
+		System.out.println("service running on port: " + serviceInfo3.getPort());
 		
 		PaymentServiceStub asyncStub = PaymentServiceGrpc.newStub(channel3);
 		

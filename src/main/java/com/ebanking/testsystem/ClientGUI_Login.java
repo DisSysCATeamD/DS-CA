@@ -1,6 +1,5 @@
 package com.ebanking.testsystem;
 
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -25,6 +24,7 @@ import javax.swing.JTextArea;
 
 import java.awt.Font;
 
+import javax.jmdns.ServiceInfo;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -35,6 +35,7 @@ public class ClientGUI_Login {
 	
 	private static LoginBlockingStub blockingStub;
 	private static BalanceBlockingStub blockingbStub;
+	private static BalanceBlockingStub bstub;
 	private static PaymentServiceStub asyncStub;
 	private static TradingStub asynctStub;
 	
@@ -84,103 +85,85 @@ public class ClientGUI_Login {
 	 */
 	
 	public ClientGUI_Login() {
-	/*
-		try {
-			String host = "localhost";
-			int port = 50051;
 		
-			//ServiceInfo serviceInfo = JmDNSDiscovery.run("_grpc1._tcp.local.");
+			String host = "localhost";
+			int port = 50001;
+		
+			//ServiceInfo serviceInfo1 = JmDNSDiscovery.run("_grpc._tcp.local.");
 	
-			//System.out.println("service running on port: " + serviceInfo.getPort());
+			System.out.println("service running on port: " + port);//serviceInfo1.getPort());
 		
 			ManagedChannel channel1 = ManagedChannelBuilder
-				.forAddress(host, port)
+				.forAddress(host, port) //serviceInfo1.getPort())
 				.usePlaintext()
 				.build();
 		
 			blockingStub = LoginGrpc.newBlockingStub(channel1);
 		
 			initialize1();
-		}
-		catch(Exception el) {
-			el.printStackTrace();
-		}}
-		//finally {
-			//channel1.shutdown().awaitTermination(60, TimeUnit.SECONDS);	
-		//}
+		
 
-		//initializeMenu();
 		//Client Balance, server streaming - channel 2
 
-		int port = 50052;
-		String host = "localhost";
+		int port2 = 50002;
+		String host2 = "localhost";
 			
-		//ServiceInfo serviceInfo = JmDNSDiscovery.run("_grpc1._tcp.local.");
-	
-		//System.out.println("service running on port: " + serviceInfo.getPort());
+		//ServiceInfo serviceInfo2 = JmDNSDiscovery.run("_bal._tcp.local.");
+		
+		System.out.println("service running on port: " + port2); //serviceInfo2.getPort());
 		
 		ManagedChannel channel2 = ManagedChannelBuilder
-			.forAddress(host, port)
+			.forAddress(host, port2) //serviceInfo2.getPort())
 			.usePlaintext()
 			.build();
 
 		//stubs -- generate from proto
 		blockingbStub = BalanceGrpc.newBlockingStub(channel2);
+		bstub = BalanceGrpc.newBlockingStub(channel2);
 		
 		initialize2();
 			
-	
+
 		
 		//client Payment - channel 3
-		try {
-			String host3 = "localhost";
-			int port3 = 50053;
-		
-			//ServiceInfo serviceInfo = JmDNSDiscovery.run("_grpc3._tcp.local.");
 	
-			//System.out.println("service running on port: " + serviceInfo.getPort());
+			String host3 = "localhost";
+			int port3 = 50003;
+		
+			//ServiceInfo serviceInfo3 = JmDNSDiscovery.run("_pay._tcp.local.");
+	
+			System.out.println("service running on port: " + port); //serviceInfo3.getPort());
 		
 			ManagedChannel channel3 = ManagedChannelBuilder
-				.forAddress(host3, port3)
+				.forAddress(host3, port3)	// serviceInfo3.getPort())
 				.usePlaintext()
 				.build();
 		
 			asyncStub = PaymentServiceGrpc.newStub(channel3);
 		
 			initialize3();
-		}
-		catch(Exception el) {
-			el.printStackTrace();
-		}
-		//finally {
-			//channel3.shutdown().awaitTermination(60, TimeUnit.SECONDS);	
-		//}
-	*/	
+		
+		
+		
 		
 		//channel4 for Client Trading
-		try {
-			String host = "localhost";
-			int port = 50054;
 		
-			//ServiceInfo serviceInfo = JmDNSDiscovery.run("_grpc4._tcp.local.");
+			String host4 = "localhost";
+			int port4 = 50054;
+		
+			//ServiceInfo serviceInfo4 = JmDNSDiscovery.run("_trade._tcp.local.");
 	
-			//System.out.println("service running on port: " + serviceInfo.getPort());
+			System.out.println("service running on port: " +port); //+ serviceInfo4.getPort());
 		
 			ManagedChannel channel4 = ManagedChannelBuilder
-				.forAddress(host, port)
+				.forAddress(host4, port4) //serviceInfo4.getPort())
 				.usePlaintext()
 				.build();
 		
 			asynctStub = TradingGrpc.newStub(channel4);
 			initialize4();
-		}
-		catch(Exception el) {
-			el.printStackTrace();
-		}
-		//finally {
-			//channel4.shutdown().awaitTermination(60, TimeUnit.SECONDS);	
-		//}
-	
+		
+
 	}
 	
 	//Initialize the contents of the frame.
@@ -228,6 +211,10 @@ public class ClientGUI_Login {
 				JOptionPane.showMessageDialog(null, "Validating, please wait");
 				
 				JOptionPane.showMessageDialog(null, "Response" +reply.getValid());	
+					frame.dispose();
+					MenuOptions menu = new MenuOptions();
+					menu.setVisible(true);
+				
 				Thread.sleep(5000);
 				
 			} catch(StatusRuntimeException el) {
@@ -250,39 +237,6 @@ public class ClientGUI_Login {
 		frame.getContentPane().add(LoginLabel);	
 		
 	}	//end of gui for Login
-	
-	private void initializeMenu() {
-		frame = new JFrame();
-		frame.setTitle("Client - eBanking Menu");
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		balanceButton = new JButton("Balance");
-		balanceButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		balanceButton.setBounds(159, 32, 117, 30);
-		frame.getContentPane().add(balanceButton);
-		
-		
-		payButton = new JButton("Bill Payment");
-		payButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		payButton.setBounds(159, 87, 117, 30);
-		frame.getContentPane().add(payButton);
-		//balanceButton.addActionListener(new ActionListener() {
-			//public void actionPerformed(ActionEvent e) {
-				//initialize2();
-			//}
-		//}
-		tradeButton = new JButton("Trade");
-		tradeButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		tradeButton.setBounds(159, 136, 117, 30);
-		frame.getContentPane().add(tradeButton);
-		
-		exitButton = new JButton("Exit");
-		exitButton.setFont(new Font("Tahoma", Font.BOLD, 12));
-		exitButton.setBounds(180, 199, 72, 30);
-		frame.getContentPane().add(exitButton);
-	}
 	
 
 	//Client GUI for Balance
@@ -320,21 +274,21 @@ public class ClientGUI_Login {
 			//This will happen when the button is clicked
 			public void actionPerformed(ActionEvent e) {
 				
-				int port = 50052;
-				String host = "localhost";
+				//int port = 50052;
+				//String host = "localhost";
 				
 				
 				// build the channel
-				ManagedChannel newChannel = ManagedChannelBuilder.forAddress(host,port).usePlaintext().build();
+				//ManagedChannel newChannel = ManagedChannelBuilder.forAddress(host,port).usePlaintext().build();
 						
 				// Creating a message that will be sent to the server
-				
+			try {	
 				balanceRequest cString =balanceRequest.newBuilder().setFirstString("Getting Balance").build(); 
 				
 				//create a stub .object that the client has that is a representation of the remote service. and is specific to the service
 				//can have 2 types of stub - blocking and async. async is send off the request and this will allow you to carry on with your code while you wait for response
 				
-				BalanceBlockingStub bstub = BalanceGrpc.newBlockingStub(newChannel);
+				//BalanceBlockingStub bstub = BalanceGrpc.newBlockingStub(channel2);
 
 				//we can use this now to call the rpc
 				
@@ -354,7 +308,10 @@ public class ClientGUI_Login {
 				    	JOptionPane.showMessageDialog(null,"\n" +response1.getTransaction() +"€" +response1.getLastTrans());
 				    	
 				    }
-				   
+				    Thread.sleep(5000);
+					
+			
+	/*	   
 			try {
 				newChannel.shutdown().awaitTermination(5,TimeUnit.SECONDS);
 			} catch (InterruptedException e1) {
@@ -362,13 +319,20 @@ public class ClientGUI_Login {
 				System.out.println("Error closing down channel");
 				e1.printStackTrace();
 			}
-				    	}
-		}); //End of setup button
+			*/
+			} catch(StatusRuntimeException el) {
+				el.printStackTrace();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+					e1.printStackTrace();
+			}
+			
+		}}); //End of setup button
 		
 		//Add button to the panel
 		panel_service_1.add(btnSend);
 		
-
+		/*
 		textResponse = new JTextArea();
 		textResponse .setLineWrap(true);
 		textResponse.setWrapStyleWord(true);
@@ -384,6 +348,7 @@ public class ClientGUI_Login {
 		
 		JPanel panel_service_3 = new JPanel();
 		frame.getContentPane().add(panel_service_3);
+		*/
 			
 	}	//end of Client Balance GUI	
 
@@ -652,7 +617,7 @@ public class ClientGUI_Login {
 		});
 		
 	} //closing Client Trading GUI
-	
-}
+
+}	//closing class ClientGUI
 
 

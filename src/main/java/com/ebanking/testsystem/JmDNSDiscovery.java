@@ -20,7 +20,7 @@ public class JmDNSDiscovery {
 			jmdns.addServiceListener(serviceType, listener);  //need to pass in an instance of the services listener
 			serviceInfo = listener.getServiceInfo();
 			
-			System.out.println("Client Started");
+			System.out.println("jmDNSClient Started");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

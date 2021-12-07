@@ -10,11 +10,11 @@ public class eBankingServerPayment extends PaymentServiceImplBase{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("Starting gRPC Server");
-		int port = 50053;
+		int port = 50003;
 		
 		eBankingServerPayment paymentServer = new eBankingServerPayment();
-		//JmDNSRegistration reg = new JmDNSRegistration();
-		//reg.run("_grpc3._tcp.local.", "PaymentService", port, "running Payment service");
+		JmDNSRegistration reg = new JmDNSRegistration();
+		reg.run("_pay._tcp.local.", "PaymentService", 50003, "running Payment service");
 		
 		try {
 			Server server3 = ServerBuilder.forPort(port)
@@ -45,8 +45,7 @@ public class eBankingServerPayment extends PaymentServiceImplBase{
 
 			@Override
 			public void onNext(BillPayment value) {
-				if(balance >= value.getAmount()) {
-					//if(value.getBic().startsWith("BOFIIE") || value.getBic().startsWith("AIBKIE") || value.getBic().startsWith("IPBSIE")){
+				if(balance >= value.getAmount() && value.getBic().startsWith("BOFIIE") || value.getBic().startsWith("AIBKIE") || value.getBic().startsWith("IPBSIE")){
 						balance = balance - value.getAmount();
 						message = "Transaction Successful, your new balance is €"+balance;	
 					//}
